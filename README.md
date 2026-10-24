@@ -1,8 +1,12 @@
 #### 1.注册中心Nacos
 下载地址：`[https://github.com/alibaba/nacos/releases/download/2.3.2/nacos-server-2.3.2.zip`](https://github.com/alibaba/nacos/releases/download/2.3.2/nacos-server-2.3.2.zip)
+
 解压后进入bin目录，cmd执行：`startup.cmd -m standalone`
+
 访问地址：`[http://127.0.0.1:8848/nacos`](http://127.0.0.1:8848/nacos)
+
 默认账号密码：`nacos / nacos`
+
 Pom依赖：
 ```
 <!-- Nacos 注册中心客户端依赖 -->  
@@ -13,15 +17,24 @@ Pom依赖：
 ```
 #### 2.熔断降级组件Sentinel
 下载地址：`[https://github.com/alibaba/Sentinel/releases]`(https://github.com/alibaba/Sentinel/releases)
+
 执行命令：`java -jar -Dserver.port=8858 sentinel-dashboard-1.8.10.jar`
-访问地址：`[http://localhost:8080]`(http://localhost:8080)
+
+访问地址：`[http://localhost:8858]`(http://localhost:8858)
+
 默认账号密码：`sentinel` / `sentinel`
+
 Pom依赖：
 ```
 <!-- Sentinel 客户端依赖 -->
 <dependency>
     <groupId>com.alibaba.cloud</groupId>
     <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+</dependency>
+<!-- Sentinel Nacos 数据源适配依赖（用于持久化规则） -->
+<dependency>
+   <groupId>com.alibaba.csp</groupId>
+   <artifactId>sentinel-datasource-nacos</artifactId>
 </dependency>
 ```
 yml配置完成后，重启服务：
@@ -60,6 +73,7 @@ Pom依赖：
 3. **放行或拒绝**：
    1. 如果是登录、注册等公共接口，**直接放行**。
    2. 如果是受保护的业务接口（如 `/consumer/**`），校验通过则**放行并透传用户信息**，校验失败则直接返回 `401 Unauthorized` 拦截在门外，不让恶意流量污染下游的业务微服务。
+
 Pom依赖：
 ```
 <!-- Spring Security 响应式 Web 依赖（适用于网关 WebFlux） -->
@@ -137,7 +151,10 @@ Provider依赖核心Pom：
 </dependency>
 ```
 Zikpin下载链接：`[https://repo1.maven.org/maven2/io/zipkin/zipkin-server/]`(https://repo1.maven.org/maven2/io/zipkin/zipkin-server/)
+
 启动命令：`java -jar zipkin.jar`
+
 docker启动：`docker run -d -p 9411:9411 openzipkin/zipkin`
+
 访问地址：`[http://127.0.0.1:9411/zipkin/]`(http://127.0.0.1:9411/zipkin/)
 

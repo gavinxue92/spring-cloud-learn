@@ -16,32 +16,41 @@ spring:
       discovery:
         server-addr: localhost:8848
 
-      # 3. 配置中心地址（关键！如果漏了这里，server-addr 就会变成 null 报错）
+      # 3. 配置中心地址
       config:
         server-addr: localhost:8848
         file-extension: yaml
-        import-check:
+
+    # 4. Sentinel 核心配置（已为你加上 Nacos 持久化）
     sentinel:
       transport:
-        # Sentinel 控制台地址
+        # Sentinel 控制台地址（注意：你这里配的是 8858，请确保和实际启动的控制台端口一致）
         dashboard: localhost:8858
-        # Client 与 Dashboard 沟通的端口（默认 8719，若被占用会自动顺延）
+        # Client 与 Dashboard 沟通的端口
         port: 8719
+      datasource:
+        # 定义流控规则持久化到 Nacos
+        flow:
+          nacos:
+            server-addr: localhost:8848
+            data-id: ${spring.application.name}-sentinel-flow # 自动对应 consumer-service-sentinel-flow
+            group-id: DEFAULT_GROUP
+            data-type: json
+            rule-type: flow # 规则类型：流控规则
+
 management:
   tracing:
     sampling:
-      probability: 1.0 # 采样率设为 1.0（100% 采集，方便我们在测试时每条请求都能在面板看到）
+      probability: 1.0 # 采样率设为 1.0
   zipkin:
     tracing:
       endpoint: http://localhost:9411/api/v2/spans # Zipkin 服务端上报地址
+
 logging:
   level:
     root: INFO
-    # 打印你自定义包路径下的 DEBUG 级别日志（方便看鉴权、路由等详细过程）
     com.example: DEBUG
-    # 确保 Micrometer Tracing 链路追踪的日志能够正常输出
     org.springframework.cloud.gateway: DEBUG
     org.springframework.cloud.loadbalancer: DEBUG
   pattern:
-    # 自定义日志打印格式：自动包含 %X{traceId}，这样每次打印日志时，都会把全局唯一 traceId 显式带上！
     console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - [TraceId: %X{traceId}] - %msg%n"

@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import com.example.impl.ConsumerBusinessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -13,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
 public class ConsumerController {
 
     @Autowired
-    private ProviderClient providerClient; // 注入 Feign 客户端
+    private ConsumerBusinessService consumerBusinessService; // 注入带有 Sentinel 保护的 Service
 
     // 从 Nacos 配置中心读取 pattern.welcomes 的值
     @Value("${pattern.welcomes:default_welcome}")
@@ -22,7 +23,7 @@ public class ConsumerController {
     @GetMapping("/consumer/hello/{name}")
     public String consumeHello(@PathVariable("name") String name) {
         // 直接调用，底层会自动轮询多个实例，并且 Zipkin 链路 100% 完美合一
-        String providerResult = providerClient.getHelloFromProvider(name);
+        String providerResult = consumerBusinessService.callProviderService(name);
 
         // 拼接从 Nacos 读取的欢迎语
         return welcomeMsg + " | " + providerResult;
