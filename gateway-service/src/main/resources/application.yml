@@ -1,0 +1,42 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+    gateway:
+      discovery:
+        locator:
+          enabled: true # 开启从注册中心动态创建路由（允许网关自动通过服务名转发）
+      routes:
+        - id: consumer_route
+          # 注意：必须是 lb:// 开头，后面紧跟注册中心里的服务名，绝对不能带 http://
+          uri: lb://consumer-service
+          predicates:
+            - Path=/consumer/**
+          # 如果你的下游 Controller 带了 /consumer 前缀，就不需要 StripPrefix；
+          # 如果下游 Controller 只有 /hello，则需要加上下面这行过滤器去去掉一层 /consumer 前缀：
+          # filters:
+          #   - StripPrefix=1
+management:
+  tracing:
+    sampling:
+      probability: 1.0 # 采样率设为 1.0（100% 采集，方便我们在测试时每条请求都能在面板看到）
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans # Zipkin 服务端上报地址
+logging:
+  level:
+    root: INFO
+    # 打印你自定义包路径下的 DEBUG 级别日志（方便看鉴权、路由等详细过程）
+    com.example: DEBUG
+    # 确保 Micrometer Tracing 链路追踪的日志能够正常输出
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.cloud.loadbalancer: DEBUG
+  pattern:
+    # 自定义日志打印格式：自动包含 %X{traceId}，这样每次打印日志时，都会把全局唯一 traceId 显式带上！
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - [TraceId: %X{traceId}] - %msg%n"
