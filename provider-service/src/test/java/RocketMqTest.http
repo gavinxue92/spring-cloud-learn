@@ -1,0 +1,23 @@
+### 定义全局基础路径（可根据你的服务端口修改）
+@baseUrl = http://localhost:8081
+
+### 测试RocketMq消息发送
+GET {{baseUrl}}/sendRocketMsg?msg=Hello_RocketMQ_5_from_Gavin
+Content-Type: application/json
+Accept: application/json
+
+### 测试RocketMq对象消息发送
+POST {{baseUrl}}/sendRocketObj
+Content-Type: application/json
+Accept: application/json
+
+{
+  "userName": "GavinXue",
+  "phone": "13812345678",
+  "age": 28
+}
+
+### 测试RocketMq事务消息发送
+GET {{baseUrl}}/sendRocketTransaction?msg=Hello_RocketMQ_Transaction
+Content-Type: application/json
+Accept: application/json

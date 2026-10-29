@@ -158,3 +158,16 @@ docker启动：`docker run -d -p 9411:9411 openzipkin/zipkin`
 
 访问地址：`[http://127.0.0.1:9411/zipkin/]`(http://127.0.0.1:9411/zipkin/)
 
+
+
+#### 6.RocketMq 相关
+官方下载地址：`https://rocketmq.apache.org/download/`
+##### Linux / Mac
+sh bin/mqnamesrv
+##### Windows (在 bin 目录下执行)
+start mqnamesrv.cmd
+
+##### Linux / Mac
+sh bin/mqbroker -n localhost:9876 autoCreateTopicEnable=true
+##### Windows
+start mqbroker.cmd -n localhost:9876 autoCreateTopicEnable=true

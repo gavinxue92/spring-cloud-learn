@@ -1,5 +1,9 @@
 server:
   port: 8081
+rocketmq:
+  name-server: localhost:9876
+  producer:
+    group: my-springboot-producer-group # 生产者组名
 # 自定义文件导出路径配置
 file:
   export:
