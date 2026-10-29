@@ -1,0 +1,32 @@
+### 定义全局基础路径（可根据你的服务端口修改）
+@baseUrl = http://localhost:8081
+
+### ==========================================
+### 测试用例 1：异常请求（所有字段符合校验规则）
+### 期望结果："code": 400,
+###  "message": "参数校验失败: 字段 [id] 校验失败: ",
+###  "data": null
+### ==========================================
+POST {{baseUrl}}/testValidateParam
+Content-Type: application/json
+
+{
+  "username": "GavinXue",
+  "phone": "13812345678",
+  "age": 28
+}
+### ==========================================
+### 测试用例 1：异常请求（所有字段符合校验规则）
+### 期望结果："code": 200,
+###  "message": "success ",
+###  "data": null
+### ==========================================
+POST {{baseUrl}}/testValidateParam
+Content-Type: application/json
+
+{
+  "id": 12,
+  "username": "GavinXue",
+  "phone": "13812345678",
+  "age": 28
+}
