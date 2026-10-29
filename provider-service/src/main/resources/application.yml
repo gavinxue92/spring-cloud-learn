@@ -1,5 +1,9 @@
 server:
   port: 8081
+# 自定义文件导出路径配置
+file:
+  export:
+    path: D:/excel_exports/  # Windows 示例
 spring:
   application:
     name: provider-service
@@ -7,6 +11,16 @@ spring:
     nacos:
       discovery:
         server-addr: localhost:8848
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/demo_db?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8
+    username: root
+    password: 123456
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml # 指定 Mapper XML 文件路径
+  configuration:
+    # 开启驼峰命名自动转换（如数据库 create_time 自动映射为 Java 的 createTime）
+    map-underscore-to-camel-case: true
 management:
   tracing:
     sampling:

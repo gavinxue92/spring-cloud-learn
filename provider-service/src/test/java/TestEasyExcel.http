@@ -1,0 +1,14 @@
+### 测试 Excel 文件上传
+POST http://localhost:8081/upload
+Content-Type: multipart/form-data; boundary=BoundaryString
+
+--BoundaryString
+Content-Disposition: form-data; name="file"; filename="user_test.xlsx"
+Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+
+< ./用户数据报表.xlsx
+--BoundaryString--
+
+### 测试百万级数据流式导出并保存为本地文件
+GET http://localhost:8081/export-big-data
+Accept: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
