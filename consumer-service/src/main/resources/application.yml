@@ -20,6 +20,9 @@ spring:
       config:
         server-addr: localhost:8848
         file-extension: yaml
+    loadbalancer:
+      nacos:
+        enabled: true
 
     # 4. Sentinel 核心配置（已为你加上 Nacos 持久化）
     sentinel:
@@ -37,6 +40,7 @@ spring:
             group-id: DEFAULT_GROUP
             data-type: json
             rule-type: flow # 规则类型：流控规则
+
 
 management:
   tracing:

@@ -15,6 +15,7 @@
         <module>provider-service</module>
         <module>consumer-service</module>
         <module>gateway-service</module>
+        <module>protocal-learn</module>
     </modules>
 
     <!-- 1. 统一管理 Spring Boot 版本 -->
